@@ -1,0 +1,33 @@
+<form
+  class="auth-form"
+  (submit)="$event.preventDefault(); login(inputEmail.value, inputPassword.value)"
+>
+  <input
+    type="email"
+    placeholder="Enter your email"
+    [disabled]="isLoading()"
+    [class.error]="formErrors['email']"
+    #inputEmail
+  />
+  @if(formErrors['email']) {
+  <span class="error-message">{{formErrors['email']}}</span>
+  }
+  <input
+    type="password"
+    placeholder="Enter your password"
+    [disabled]="isLoading()"
+    [class.error]="formErrors['password']"
+    #inputPassword
+  />
+  @if(formErrors['password']) {
+  <span class="error-message">{{formErrors['password']}}</span>
+  }
+  <a class="auth-redirect" [routerLink]="['/auth/signup']">
+    Create an Account?
+  </a>
+  <button type="submit" [disabled]="isLoading()">
+    @if(isLoading()) {
+    <app-button-spinner />
+    } @else{ Login }
+  </button>
+</form>

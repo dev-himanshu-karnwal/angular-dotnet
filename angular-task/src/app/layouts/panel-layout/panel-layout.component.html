@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <div class="navbar-logo">MyLogo</div>
+
+  <button class="menu-toggle" id="menuToggle" (click)="toggleNavbar()">
+    ☰
+  </button>
+
+  <div class="navbar-menu" [class.active]="isNavbarOpen()" id="navbarMenu">
+    <span class="username">Hello, {{ username }}</span>
+    <button class="logout-btn">
+      Logout <ng-icon name="lucideArrowRightFromLine" />
+    </button>
+  </div>
+</nav>
+
+<main>
+  <router-outlet />
+</main>
