@@ -3,6 +3,7 @@
   (submit)="$event.preventDefault(); signup(inputUsername.value, inputEmail.value, inputPassword.value)"
 >
   <input
+    id="text"
     type="text"
     placeholder="Enter your name"
     [disabled]="isLoading()"
@@ -13,6 +14,7 @@
   <span class="error-message">{{formErrors['username']}}</span>
   }
   <input
+    id="email"
     type="email"
     placeholder="Enter your email"
     [disabled]="isLoading()"
@@ -23,6 +25,7 @@
   <span class="error-message">{{formErrors['email']}}</span>
   }
   <input
+    id="password"
     type="password"
     placeholder="Enter your password"
     [disabled]="isLoading()"
@@ -35,7 +38,7 @@
   <a class="auth-redirect" [routerLink]="['/auth/login']">
     Already have an account?
   </a>
-  <button type="submit" [disabled]="isLoading()">
+  <button id="signup" type="submit" [disabled]="isLoading()">
     @if(isLoading()) {
     <app-button-spinner />
     } @else{ Signup }

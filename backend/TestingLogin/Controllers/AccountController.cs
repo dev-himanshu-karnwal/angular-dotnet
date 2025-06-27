@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
@@ -60,6 +61,21 @@ namespace TestingLogin.Controllers
         public async Task<IActionResult> Register([FromBody] Register model)
         {
             var user = new IdentityUser { UserName = model.Username, Email = model.Email };
+            if (string.IsNullOrEmpty(model.Email) || !new EmailAddressAttribute().IsValid(model.Email))
+            {
+                return BadRequest(new { message = "Invalid email address format." });
+            }
+
+            // Validate the password requirements (you can adjust these as needed)
+            if (string.IsNullOrEmpty(model.Password) || model.Password.Length < 6)
+            {
+                return BadRequest(new { message = "Password must be at least 6 characters long." });
+            }
+            var checking =await _userManager.FindByEmailAsync(model.Email);
+            if (checking.Email == user.Email)
+            {
+                return BadRequest(new { message = "This email is already exists." });
+            }
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -68,7 +84,7 @@ namespace TestingLogin.Controllers
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-             new Claim(ClaimTypes.NameIdentifier, user.Id), // <- this is the user's Id
+            new Claim(ClaimTypes.NameIdentifier, user.Id), // <- this is the user's Id
 
         };
 
